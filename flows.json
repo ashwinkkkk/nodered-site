@@ -1,0 +1,435 @@
+[
+    {
+        "id": "9e55d19a5ba8c647",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "8d6d6fa23ee4e10c",
+        "type": "http request",
+        "z": "9e55d19a5ba8c647",
+        "name": "Get Data from ThingSpeak",
+        "method": "GET",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "https://api.thingspeak.com/channels/2008467/feeds.json?results=2",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "authType": "",
+        "senderr": false,
+        "x": 540,
+        "y": 520,
+        "wires": [
+            [
+                "f8456276fed292dc",
+                "9b32616f3f695246",
+                "49489eb71b9ca87a"
+            ]
+        ]
+    },
+    {
+        "id": "f8456276fed292dc",
+        "type": "debug",
+        "z": "9e55d19a5ba8c647",
+        "name": "debug 1",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 820,
+        "y": 540,
+        "wires": []
+    },
+    {
+        "id": "6a4ce500042fddd7",
+        "type": "debug",
+        "z": "9e55d19a5ba8c647",
+        "name": "debug 2",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1040,
+        "y": 520,
+        "wires": []
+    },
+    {
+        "id": "9b32616f3f695246",
+        "type": "function",
+        "z": "9e55d19a5ba8c647",
+        "name": "Extract Closing Price",
+        "func": "msg.payload = msg.payload.feeds[1].field1\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 840,
+        "y": 480,
+        "wires": [
+            [
+                "6a4ce500042fddd7",
+                "3dface05050fe174"
+            ]
+        ]
+    },
+    {
+        "id": "49489eb71b9ca87a",
+        "type": "function",
+        "z": "9e55d19a5ba8c647",
+        "name": "Extract Account Balance",
+        "func": "msg.payload = msg.payload.feeds[1].field4\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 850,
+        "y": 620,
+        "wires": [
+            [
+                "fd12a683e97bc13f"
+            ]
+        ]
+    },
+    {
+        "id": "fd2b34d83c56a134",
+        "type": "inject",
+        "z": "9e55d19a5ba8c647",
+        "name": "Delay",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "5",
+        "crontab": "",
+        "once": false,
+        "onceDelay": "15",
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 260,
+        "y": 340,
+        "wires": [
+            [
+                "0a11c8f34054b9b9"
+            ]
+        ]
+    },
+    {
+        "id": "45d8f5814de9e021",
+        "type": "inject",
+        "z": "9e55d19a5ba8c647",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "14400",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 270,
+        "y": 420,
+        "wires": [
+            [
+                "4495e0a0b60288c6"
+            ]
+        ]
+    },
+    {
+        "id": "5a33ba721ecc2b59",
+        "type": "debug",
+        "z": "9e55d19a5ba8c647",
+        "name": "debug 3",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 640,
+        "y": 420,
+        "wires": []
+    },
+    {
+        "id": "f34efd09e3ce4365",
+        "type": "comment",
+        "z": "9e55d19a5ba8c647",
+        "name": "",
+        "info": "Compare open price to predicted price to activate LED?",
+        "x": 440,
+        "y": 360,
+        "wires": []
+    },
+    {
+        "id": "9f7e6cb338e89604",
+        "type": "ui_text",
+        "z": "9e55d19a5ba8c647",
+        "group": "fd19b5ec17f216a7",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "BTC YTD Closing Price",
+        "format": "{{msg.payload.prevClosePrice}}",
+        "layout": "col-center",
+        "className": "",
+        "x": 730,
+        "y": 360,
+        "wires": []
+    },
+    {
+        "id": "7eee40904a89983e",
+        "type": "ui_text",
+        "z": "9e55d19a5ba8c647",
+        "group": "fd19b5ec17f216a7",
+        "order": 3,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "BTC Current Price: ",
+        "format": "{{msg.payload}}",
+        "layout": "row-center",
+        "className": "",
+        "x": 710,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "3dface05050fe174",
+        "type": "ui_chart",
+        "z": "9e55d19a5ba8c647",
+        "name": "Closing Price",
+        "group": "fd19b5ec17f216a7",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "label": "Predicted Closing Price",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": true,
+        "ymin": "",
+        "ymax": "",
+        "removeOlder": "15",
+        "removeOlderPoints": "",
+        "removeOlderUnit": "60",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 1050,
+        "y": 440,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "fd12a683e97bc13f",
+        "type": "ui_chart",
+        "z": "9e55d19a5ba8c647",
+        "name": "Account Balance",
+        "group": "fd19b5ec17f216a7",
+        "order": 5,
+        "width": 0,
+        "height": 0,
+        "label": "Account Balance",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": true,
+        "ymin": "",
+        "ymax": "",
+        "removeOlder": "15",
+        "removeOlderPoints": "",
+        "removeOlderUnit": "60",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 1210,
+        "y": 620,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "34f18953c6de421c",
+        "type": "ui_chart",
+        "z": "9e55d19a5ba8c647",
+        "name": "Bitcoin Chart",
+        "group": "fd19b5ec17f216a7",
+        "order": 4,
+        "width": 0,
+        "height": 0,
+        "label": "BTC/USDT",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": true,
+        "ymin": "",
+        "ymax": "",
+        "removeOlder": "1",
+        "removeOlderPoints": "",
+        "removeOlderUnit": "60",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#f4aa0b",
+            "#c41212",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 630,
+        "y": 220,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "0a11c8f34054b9b9",
+        "type": "binance-get-price",
+        "z": "9e55d19a5ba8c647",
+        "name": "Bitcoin",
+        "ticker": "BTCUSDT",
+        "x": 450,
+        "y": 220,
+        "wires": [
+            [
+                "34f18953c6de421c",
+                "7eee40904a89983e"
+            ]
+        ]
+    },
+    {
+        "id": "4495e0a0b60288c6",
+        "type": "binance-get-day-stats",
+        "z": "9e55d19a5ba8c647",
+        "name": "BTC Day stats",
+        "ticker": "BTCUSDT",
+        "x": 440,
+        "y": 420,
+        "wires": [
+            [
+                "5a33ba721ecc2b59",
+                "9f7e6cb338e89604"
+            ]
+        ]
+    },
+    {
+        "id": "cb06a5e0577f91bc",
+        "type": "inject",
+        "z": "9e55d19a5ba8c647",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "900",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 290,
+        "y": 520,
+        "wires": [
+            [
+                "8d6d6fa23ee4e10c"
+            ]
+        ]
+    },
+    {
+        "id": "fd19b5ec17f216a7",
+        "type": "ui_group",
+        "name": "Charts",
+        "tab": "5a301bf5ae9ea9c0",
+        "order": 1,
+        "disp": true,
+        "width": 7,
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "5a301bf5ae9ea9c0",
+        "type": "ui_tab",
+        "name": "Node-RED Dashboard",
+        "icon": "dashboard",
+        "order": 1,
+        "disabled": false,
+        "hidden": false
+    }
+]
